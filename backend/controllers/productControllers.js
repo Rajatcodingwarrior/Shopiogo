@@ -3,7 +3,7 @@ import Product from "../models/product.js";
 import APIFilters from "../utils/apiFilters.js";
 import ErrorHandler from "../utils/errorHandler.js";
 
-// Create new Product   =>  /api/v1/products
+// get Product   =>  /api/v1/products
 export const getProducts = catchAsyncErrors(async (req, res) => {
   const resPerPage = 4;
   const apiFilters = new APIFilters(Product, req.query).search().filters();
@@ -23,6 +23,7 @@ export const getProducts = catchAsyncErrors(async (req, res) => {
 
 // Create new Product   =>  /api/v1/admin/products
 export const newProduct = catchAsyncErrors(async (req, res) => {
+  req.body.user=req.user._id;
   const product = await Product.create(req.body);
 
   res.status(200).json({
@@ -43,8 +44,8 @@ export const getProductDetails = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Update product details   =>  /api/v1/products/:id
-export const updateProduct = catchAsyncErrors(async (req, res) => {
+// Update product details   =>  /api/v1/admin/products/:id
+export const updateProduct = catchAsyncErrors(async (req, res,next) => {
   let product = await Product.findById(req?.params?.id);
 
   if (!product) {
@@ -60,8 +61,8 @@ export const updateProduct = catchAsyncErrors(async (req, res) => {
   });
 });
 
-// Delete product   =>  /api/v1/products/:id
-export const deleteProduct = catchAsyncErrors(async (req, res) => {
+// Delete product   =>  /api/v1/admin/products/:id
+export const deleteProduct = catchAsyncErrors(async (req, res,next) => {
   const product = await Product.findById(req?.params?.id);
 
   if (!product) {
