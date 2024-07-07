@@ -59,6 +59,7 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
 // Forgot password   =>  /api/v1/password/forgot
 export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   // Find user in the database
+  
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
@@ -78,7 +79,7 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   try {
     await sendEmail({
       email: user.email,
-      subject: "ShopIT Password Recovery",
+      subject: "Shopiogo Password Recovery",
       message,
     });
 
@@ -130,7 +131,6 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
 
   sendToken(user, 200, res);
 });
-
 // Get current user profile  =>  /api/v1/me
 export const getUserProfile = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req?.user?._id);
