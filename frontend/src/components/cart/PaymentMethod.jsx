@@ -3,7 +3,9 @@ import MetaData from "../layout/MetaData";
 import { useSelector } from "react-redux";
 import CheckoutSteps from "./CheckoutSteps";
 import { caluclateOrderCost } from "../../helpers/helpers";
-import { useCreateNewOrderMutation } from "../../redux/api/orderApi";
+import {
+  useCreateNewOrderMutation,
+} from "../../redux/api/orderApi";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -14,8 +16,8 @@ const PaymentMethod = () => {
 
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
 
-  const [createNewOrder, { isLoading, error, isSuccess }] =
-    useCreateNewOrderMutation();
+  const [createNewOrder, { error, isSuccess }] = useCreateNewOrderMutation();
+
 
   useEffect(() => {
     if (error) {
@@ -23,7 +25,7 @@ const PaymentMethod = () => {
     }
 
     if (isSuccess) {
-      navigate("/");
+      navigate("/me/orders?order_success=true");
     }
   }, [error, isSuccess]);
 
@@ -51,11 +53,8 @@ const PaymentMethod = () => {
       createNewOrder(orderData);
     }
 
-    if (method === "Card") {
-      // Stripe Checkout
-      alert("Card");
     }
-  };
+  
 
   return (
     <>
@@ -94,7 +93,11 @@ const PaymentMethod = () => {
               </label>
             </div>
 
-            <button id="shipping_btn" type="submit" className="btn py-2 w-100">
+            <button
+              id="shipping_btn"
+              type="submit"
+              className="btn py-2 w-100"
+            >
               CONTINUE
             </button>
           </form>
